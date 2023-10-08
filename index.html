@@ -1,15 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>My first three.js app</title>
-		<style>
-			body { margin: 0; }
-		</style>
-	</head>
-	<body>
-        <script type="module" src="/main.js">
-        </script>
-        <button id="colorButton"> change to red </button>
-	</body>
+<html>
+<head>
+  <title>Canvas and Background Image Aspect Ratio</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    img#backgroundImage {
+      display: block;
+      width: 100%;
+      height: auto;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <!-- Background Image -->
+  <script src="main.js"></script>
+  <script>
+    // Your JavaScript code will go here
+  </script>
+</body>
 </html>

@@ -1,49 +1,62 @@
 import * as THREE from 'three';
 
-let colors = new THREE.Color(0x00ff00);  // Use a THREE.Color instance for the initial color
-
-const changeColor = () => {
-    colors.set(0xFF0000);  // Change to another THREE.Color instance
-    cube.material.color.copy(colors);  // Update the material color
-}
-
-
-//----------------------
-
+const canvas = document.getElementById('canvas');
+const renderer = new THREE.WebGLRenderer({ canvas });
 const scene = new THREE.Scene();
 
-// four params, unit: degrees, ratio, near, far
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+function setCamera(cameraParams) {
+    const camera = new THREE.PerspectiveCamera(
+        cameraParams.fov, // Vertical field of view in degrees
+        canvas.width / canvas.height, // Aspect ratio
+        0.1, // Near clipping plane
+        1000 // Far clipping plane
+    );
 
-const renderer = new THREE.WebGLRenderer();
-//height and width
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
+    camera.position.set(0, 0, 0); // Set the camera position
+    camera.rotation.set(cameraParams.pitch, 0, cameraParams.roll); // Set rotation
 
-// geometry: points and fill
-const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-//material
-const material = new THREE.MeshBasicMaterial( { color: colors } );
-// mesh helps to combine geo and mat and can move freely around
-const cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
+    // Add the camera to the scene
+    scene.add(camera);
 
-//x represents the horizontal position (left to right).
-//y represents the vertical position (up and down).
-//z represents the depth or distance from the camera to the scene (front to back).
-camera.position.z = 3;
-
-// loop
-function animate() {
-    // requestAnimationFrame will destory the loop when out of the page
-	requestAnimationFrame( animate );
-    cube.rotation.x += 0.01;
-	cube.rotation.y += 0.01;
-	renderer.render( scene, camera );
+    return camera;
 }
-animate();
 
-//---------
-// Attach an event listener to the button
-const colorButton = document.getElementById('colorButton');
-colorButton.addEventListener('click', changeColor);
+function createWall(wallData) {
+    const points = wallData.points.map(point => new THREE.Vector3(point.x.value, point.y.value, point.z.value));
+
+    const geometry = new THREE.BufferGeometry();
+    geometry.setFromPoints(points);
+
+    const material = new THREE.MeshPhysicalMaterial({
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.5,
+        color: 0xFF333C,
+    });
+
+    const wall = new THREE.Mesh(geometry, material);
+
+    // Set wall position and rotation as needed
+    // wall.position.set(x, y, z);
+    // wall.rotation.set(rx, ry, rz);
+
+    scene.add(wall);
+
+    return wall;
+}
+
+// Loop through your wallsData array and create walls
+wallsData.forEach(wallData => {
+    createWall(wallData);
+});
+
+function animate() {
+    requestAnimationFrame(animate);
+  
+    // Update any animations or interactions here
+  
+    renderer.render(scene, camera);
+  }
+  
+  animate();
+  
