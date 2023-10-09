@@ -4,6 +4,40 @@ const canvas = document.getElementById('canvas');
 const renderer = new THREE.WebGLRenderer({ canvas });
 const scene = new THREE.Scene();
 
+let cameraParams = {
+    "fov": 65.3,
+    "height": 1.53,
+    "pitch": -0.11,
+    "roll": 0.03
+}
+
+let wallData = [
+    {
+        "area": 12,
+        "height": 3,
+        "points": [
+            {
+                "x": {
+                    "value": -1.2
+                },
+                "y": {
+                    "value": -1.53
+                },
+                "z": {
+                    "value": -3.43
+                }
+            }
+        ],
+        "wallid": 0,
+        "wallnormal": {
+            "x": -2.78,
+            "y": -3.234432,
+            "z": 1.46
+        },
+        "width": 4
+    }]
+
+
 function setCamera(cameraParams) {
     const camera = new THREE.PerspectiveCamera(
         cameraParams.fov, // Vertical field of view in degrees
@@ -52,11 +86,10 @@ wallsData.forEach(wallData => {
 
 function animate() {
     requestAnimationFrame(animate);
-  
+
     // Update any animations or interactions here
-  
+
     renderer.render(scene, camera);
-  }
-  
-  animate();
-  
+}
+
+animate();
